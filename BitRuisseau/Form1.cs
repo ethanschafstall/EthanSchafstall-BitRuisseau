@@ -11,10 +11,12 @@ namespace BitRuisseau
 
         const int TEXT_WIDTH = 6;
         const int TEXT_HIGHT = 20;
+
         public Form1()
         {
             InitializeComponent();
             //InitInterfacesChecked();
+            InitSearchBar();
         }
         private void InitInterfacesChecked()
         {
@@ -33,5 +35,49 @@ namespace BitRuisseau
             }
             this.Controls.Add(networkInterfaceList);
         }
+        private void InitSearchBar()
+        {
+
+            TextBox searchTextBox = new TextBox();
+            Button searchButton = new Button();
+            ListBox resultListBox = new ListBox();
+
+            // searchResultsWindow
+            Form searchResultsWindows = new Form();
+            searchResultsWindows.Size = new Size(400, 500);
+            searchResultsWindows.FormClosing += (sender, e) =>
+            {
+                searchResultsWindows.Hide();
+                e.Cancel = true;
+            };
+            searchResultsWindows.Controls.Add(resultListBox);
+
+            // searchTextBox
+            searchTextBox.Location = new Point(12, 12);
+            searchTextBox.Name = "searchTextBox";
+            searchTextBox.Size = new Size(260, 20);
+
+
+            // searchButton
+            searchButton.Location = new Point(278, 10);
+            searchButton.Name = "searchButton";
+            searchButton.Size = new Size(75, 23);
+            searchButton.Text = "Search";
+            searchButton.Click += (sender, e) =>
+            {
+                searchResultsWindows.Show();
+            };
+
+            // resultListBox
+            resultListBox.Location = new Point(12, 38);
+            resultListBox.Name = "resultListBox";
+            resultListBox.Size = new Size(360, 400);
+
+            // MainForm
+            this.Controls.Add(searchButton);
+            this.Controls.Add(searchTextBox);
+
+        }
+
     }
 }
