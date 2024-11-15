@@ -14,7 +14,7 @@ namespace BitRuisseau
         public Form1()
         {
             InitializeComponent();
-            InitInterfacesChecked();
+            //InitInterfacesChecked();
         }
         private void InitInterfacesChecked()
         {
