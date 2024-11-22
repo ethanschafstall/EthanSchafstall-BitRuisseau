@@ -40,5 +40,16 @@ namespace BitRuisseau.services
                 return Task.CompletedTask;
             };
         }
+        public async Task SubscribeToTopic(string topic)
+        {
+            await _client.SubscribeAsync(topic);
+
+            _client.ApplicationMessageReceivedAsync += e =>
+            {
+                Debug.WriteLine($"Received message: {Encoding.UTF8.GetString(e.ApplicationMessage.PayloadSegment)}");
+                return Task.CompletedTask;
+            };
+
+        }
     }
 }
