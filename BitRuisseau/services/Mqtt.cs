@@ -36,7 +36,7 @@ namespace BitRuisseau.services
             var connectResult = await _client.ConnectAsync(_options);
             _client.ConnectedAsync += e =>
             {
-                Console.WriteLine($"Connected to Broker");
+                Debug.WriteLine($"Connected to Broker");
                 return Task.CompletedTask;
             };
         }
