@@ -12,6 +12,6 @@
 
         public static string Username = "ict";
 
-        public static string Password = "123";
+        public static string Password = "321";
     }
 }
