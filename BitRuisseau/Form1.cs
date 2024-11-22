@@ -1,3 +1,4 @@
+using BitRuisseau.configs;
 using BitRuisseau.services;
 using Microsoft.VisualBasic;
 using System.Net.NetworkInformation;
@@ -17,6 +18,8 @@ namespace BitRuisseau
             InitializeComponent();
             //InitInterfacesChecked();
             InitSearchBar();
+            Mqtt mqtt = new Mqtt(Mqtt_Config.Broker, Mqtt_Config.Port, Mqtt_Config.ClientId, Mqtt_Config.Username, Mqtt_Config.Password);
+            mqtt.ConnectToBroker();
         }
         private void InitInterfacesChecked()
         {
