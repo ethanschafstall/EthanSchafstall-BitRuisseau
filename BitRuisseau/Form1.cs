@@ -3,6 +3,7 @@ using BitRuisseau.services;
 using Microsoft.VisualBasic;
 using System.Net.NetworkInformation;
 using System.Reflection;
+using System.Windows.Forms;
 
 namespace BitRuisseau
 {
@@ -12,7 +13,6 @@ namespace BitRuisseau
 
         const int TEXT_WIDTH = 6;
         const int TEXT_HIGHT = 20;
-
         public Form1()
         {
             InitializeComponent();
@@ -40,43 +40,41 @@ namespace BitRuisseau
         }
         private void InitSearchBar()
         {
-
-            TextBox searchTextBox = new TextBox();
-            Button searchButton = new Button();
-            ListBox resultListBox = new ListBox();
-
+            // search text box
+            TextBox searchTextBox = new TextBox()
+            {
+                Location = new Point(12, 12),
+                Name = "searchTextBox",
+                Size = new Size(260, 20)
+            };
+            // search results list box
+            ListBox resultListBox = new ListBox()
+            {
+                Location = new Point(12, 38),
+                Name = "resultListBox",
+                Size = new Size(360, 400)
+            };
             // searchResultsWindow
-            Form searchResultsWindows = new Form();
-            searchResultsWindows.Size = new Size(400, 500);
+            Form searchResultsWindows = new Form() { Size = new Size(400, 500) };
             searchResultsWindows.FormClosing += (sender, e) =>
             {
                 searchResultsWindows.Hide();
                 e.Cancel = true;
             };
             searchResultsWindows.Controls.Add(resultListBox);
-
-            // searchTextBox
-            searchTextBox.Location = new Point(12, 12);
-            searchTextBox.Name = "searchTextBox";
-            searchTextBox.Size = new Size(260, 20);
-
-
-            // searchButton
-            searchButton.Location = new Point(278, 10);
-            searchButton.Name = "searchButton";
-            searchButton.Size = new Size(75, 23);
-            searchButton.Text = "Search";
+            // search button
+            Button searchButton = new Button()
+            {
+                Location = new Point(278, 10),
+                Name = "searchButton",
+                Size = new Size(75, 23),
+                Text = "Search"
+            };
             searchButton.Click += (sender, e) =>
             {
                 searchResultsWindows.Show();
             };
 
-            // resultListBox
-            resultListBox.Location = new Point(12, 38);
-            resultListBox.Name = "resultListBox";
-            resultListBox.Size = new Size(360, 400);
-
-            // MainForm
             this.Controls.Add(searchButton);
             this.Controls.Add(searchTextBox);
 
