@@ -79,6 +79,35 @@ namespace BitRuisseau
             this.Controls.Add(searchTextBox);
 
         }
+        private void InitFileBrowser()
+        {
+            Button browseButton = new Button
+            {
+                Location = new Point(12, 40),
+                Size = new Size(100, 30),
+                Text = "Browse Folder"
+            };
 
+            TextBox folderPathTextBox = new TextBox
+            {
+                Location = new Point(120, 40),
+                Size = new Size(200, 20),
+                ReadOnly = true
+            };
+
+            FolderBrowserDialog folderDialog = new FolderBrowserDialog();
+
+            browseButton.Click += (sender, e) =>
+            {
+                DialogResult result = folderDialog.ShowDialog();
+                if (result == DialogResult.OK)
+                {
+                    folderPathTextBox.Text = folderDialog.SelectedPath;
+                }
+            };
+
+            this.Controls.Add(browseButton);
+            this.Controls.Add(folderPathTextBox);
+        }
     }
 }
