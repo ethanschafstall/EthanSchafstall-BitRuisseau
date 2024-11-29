@@ -13,6 +13,7 @@ namespace BitRuisseau
     public partial class Form1 : Form
     {
         List<NetworkInterface> networkInterfaces = NetworkInterfaceService.GetInterfaces();
+        private List<NetworkInterface> _networkInterfaces = NetworkInterfaceService.GetInterfaces();
         private Catalog _catalog = new Catalog();
 
         const int TEXT_WIDTH = 6;
@@ -33,10 +34,12 @@ namespace BitRuisseau
             {
                 Location = new Point(160, 30),
                 Size = new Size(networkInterfaces.Select(netInt => netInt.Description.Count()).ToList().Max() * TEXT_WIDTH, networkInterfaces.Count * TEXT_HIGHT)
+                Size = new Size(_networkInterfaces.Select(netInt => netInt.Description.Count()).ToList().Max() * TEXT_WIDTH, _networkInterfaces.Count * TEXT_HIGHT)
             };
 
             // Create checklist button for each available interface
             foreach (var item in networkInterfaces)
+            foreach (var item in _networkInterfaces)
             {
                 networkInterfaceList.Items.Add(item.Description, false);
             }
