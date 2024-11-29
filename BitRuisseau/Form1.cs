@@ -1,6 +1,9 @@
 using BitRuisseau.configs;
+using BitRuisseau.Models;
 using BitRuisseau.services;
+using BitRuisseau.tools;
 using Microsoft.VisualBasic;
+using System.Data;
 using System.Net.NetworkInformation;
 using System.Reflection;
 using System.Windows.Forms;
@@ -10,6 +13,7 @@ namespace BitRuisseau
     public partial class Form1 : Form
     {
         List<NetworkInterface> networkInterfaces = NetworkInterfaceService.GetInterfaces();
+        private Catalog _catalog = new Catalog();
 
         const int TEXT_WIDTH = 6;
         const int TEXT_HIGHT = 20;
@@ -108,6 +112,67 @@ namespace BitRuisseau
 
             this.Controls.Add(browseButton);
             this.Controls.Add(folderPathTextBox);
+        }
+
+        private void FileSelection(List<FileModel> files)
+        {
+            DataGridView dataGridView = new DataGridView();
+            dataGridView.Height = (files.Count + 2) * TEXT_HIGHT;
+            dataGridView.Width = files.Max(file => (file.Name + file.Path + file.SizeInKb + file.Extension).Length) * TEXT_WIDTH;
+            dataGridView.AllowUserToResizeColumns = false;
+            dataGridView.AllowUserToResizeRows = false;
+            dataGridView.Location = new Point(100, 100);
+
+            dataGridView.Columns.Add(new DataGridViewCheckBoxColumn()
+            {
+                HeaderText = "Select",
+                Name = "Select",
+                Width = ("Select".Length+1) * TEXT_WIDTH,
+            });
+            dataGridView.Columns.Add("Name", "File Name");
+            dataGridView.Columns["Name"].Width = files.Max(file => file.Name.Length) * TEXT_WIDTH;
+
+            dataGridView.Columns.Add("SizeInKb", "Size in Kb");
+            dataGridView.Columns["SizeInKb"].Width = files.Max(file => file.SizeInKb.Length) * TEXT_WIDTH;
+
+            dataGridView.Columns.Add("Path", "Path");
+            dataGridView.Columns["Path"].Width = files.Max(file => file.Path.Length) * TEXT_WIDTH/3;
+
+            dataGridView.Columns.Add("Extension", "Ext");
+            dataGridView.Columns["Extension"].Width = files.Max(file => file.Extension.Length) * TEXT_WIDTH;
+
+            dataGridView.Columns["Extension"].Width = 50;
+            foreach (var file in files)
+            { 
+                dataGridView.Rows.Add(_catalog.fileModels.Contains(file) ,file.Name, file.SizeInKb, file.Path, file.Extension);
+            }
+            this.Controls.Add(dataGridView);
+            Button selectFilesButton = new Button()
+            { 
+                Text = "Add Files",
+                Location = new Point(dataGridView.Location.X + dataGridView.Width/2, dataGridView.Location.Y + dataGridView.Height)
+        };
+            selectFilesButton.Click += (sender, e) =>
+            {
+                List<FileModel> selectedFiles = new List<FileModel>();
+
+                foreach (DataGridViewRow row in dataGridView.Rows)
+                {
+                    if (row.Cells["Select"].Value != null && (bool)row.Cells["Select"].Value)
+                    {
+                        var file = row.DataBoundItem as FileModel;
+                        if (file != null)
+                        {
+                            selectedFiles.Add(file);
+                        }
+                    };
+                }
+                _catalog.fileModels = selectedFiles;
+                dataGridView.DataSource = null;
+                this.Controls.Remove(dataGridView);
+                this.Controls.Remove(selectFilesButton);
+            };
+            this.Controls.Add(selectFilesButton);
         }
     }
 }
