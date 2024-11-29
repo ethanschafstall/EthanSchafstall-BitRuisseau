@@ -110,6 +110,8 @@ namespace BitRuisseau
                 if (result == DialogResult.OK)
                 {
                     folderPathTextBox.Text = folderDialog.SelectedPath;
+                    List<FileModel> files = FileManager.GetFileInfo(folderDialog.SelectedPath);
+                    FileSelection(files);
                 }
             };
 
